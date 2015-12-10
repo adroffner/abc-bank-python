@@ -12,13 +12,13 @@ class Account:
 
     def deposit(self, amount):
         if (amount <= 0):
-            raise ValueError("amount must be greater than zero")
+            raise ValueError("deposit amount must be greater than zero")
         else:
             self.transactions.append(Transaction(amount))
 
     def withdraw(self, amount):
         if (amount <= 0):
-            raise ValueError("amount must be greater than zero")
+            raise ValueError("withdraw amount must be greater than zero")
         else:
             self.transactions.append(Transaction(-amount))
 
