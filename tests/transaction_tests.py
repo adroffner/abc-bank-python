@@ -1,8 +1,9 @@
-from nose.tools import assert_is_instance
+from unittest import TestCase
 
 from abcbank.transaction import Transaction
 
-
-def test_type():
-    t = Transaction(5)
-    assert_is_instance(t, Transaction, "correct type")
+class TransactionTests(TestCase):
+    
+    def test_type(self):
+        t = Transaction(5)
+        self.assertIsInstance(t, Transaction, "correct type")
