@@ -70,3 +70,19 @@ class Account(object):
         '''
         return sum([t.amount for t in self.transactions])
 
+    def accountTypeText(self):
+        ''' Give an account type description text.
+
+        :returns: a string for the account type name
+        '''
+        accountType = ""
+
+        if self.accountType == CHECKING:
+            accountType = "Checking Account"
+        if self.accountType == SAVINGS:
+            accountType = "Savings Account"
+        if self.accountType == MAXI_SAVINGS:
+            accountType = "Maxi Savings Account"
+
+        return accountType
+
