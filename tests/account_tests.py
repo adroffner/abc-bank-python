@@ -23,7 +23,7 @@ class AccountTests(TestCase):
         amount = 2
         a = Account(CHECKING)
         a.withdraw(amount)
-        self.assertLessEqual(amount, 0)
+        self.assertGreaterEqual(amount, 0)
         self.assertIsInstance(a.transactions[0], Transaction, "correct type")
     
     def test_withdraw_error(self):
