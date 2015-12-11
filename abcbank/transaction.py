@@ -1,5 +1,7 @@
 from datetime import datetime
 
+DEPOSIT = "deposit"
+WITHDRAWL = "withdrawal"
 
 class Transaction(object):
     ''' A single Transaction on an account.
@@ -17,16 +19,22 @@ class Transaction(object):
         self.amount = amount
         self.transactionDate = datetime.now()
 
+    def eventType(self):
+        ''' Transaction event type code
+
+        :returns: event type string
+        '''
+        if self.amount < 0:
+            return WITHDRAWL
+        elif self.amount > 0:
+            return DEPOSIT
+        else:
+            return "N/A"
+
     def eventText(self):
         ''' Transaction event text describes what happened.
 
         :returns: event description string
         '''
-        if self.amount < 0:
-            return "withdrawal"
-        elif self.amount > 0:
-            return "deposit"
-        else:
-            return "N/A"
-
+        return self.eventType()
 

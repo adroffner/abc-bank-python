@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from abcbank.transaction import Transaction
+from datetime import datetime, timedelta
+from abcbank.transaction import Transaction, DEPOSIT, WITHDRAWL
 from abcbank.account import Account, CHECKING, SAVINGS, MAXI_SAVINGS, ACCT_TYPE_NAME
 
 
@@ -84,4 +85,29 @@ class AccountTests(TestCase):
         for k,v in ACCT_TYPE_NAME.items():
             a = Account(k)
             self.assertEquals(a.accountTypeText(), v)
+
+    def test_transactionHistory_age_ok(self):
+        amount = 250.00
+        a = Account(MAXI_SAVINGS)
+        a.deposit(amount)
+        a.transactions[0].transactionDate = datetime.now() - timedelta(days=0)
+        result = a.transactionHistory(5)
+        self.assertEquals(len(result), 1)
+
+    def test_transactionHistory_age_older(self):
+        amount = 250.00
+        a = Account(MAXI_SAVINGS)
+        a.deposit(amount)
+        a.transactions[0].transactionDate = datetime.now() - timedelta(days=8)
+        result = a.transactionHistory(5)
+        self.assertEquals(len(result), 0)
+
+    def test_transactionHistory_type_ok(self):
+        amount = 250.00
+        a = Account(MAXI_SAVINGS)
+        a.deposit(amount)
+        a.withdraw(amount)
+        a.deposit(amount)
+        result = a.transactionHistory(5, transType=DEPOSIT)
+        self.assertEquals(len(result), 2)
 

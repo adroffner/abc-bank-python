@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from abcbank.transaction import Transaction
 
 CHECKING = 0
@@ -84,4 +85,19 @@ class Account(object):
         if self.accountType in ACCT_TYPE_NAME:
             accountType = ACCT_TYPE_NAME[self.accountType]
         return accountType
+
+    def transactionHistory(self, daysOld, transType=None):
+        ''' Account Transaction history.
+
+        :param int daysOld: find transaction that are no more than N days old
+        :param transType: a Transaction type code, e.g. transaction.DEPOSIT
+        '''
+        transList = []
+        # Filter out older older transactions.
+        now = datetime.now()
+        transList = [ v for v in self.transactions if (now - v.transactionDate) <= timedelta(days=daysOld) ]
+        # Filter out transaction of the right type.
+        if transType:
+            transList = [ v for v in self.transactions if v.eventType() == transType ]
+        return transList
 
