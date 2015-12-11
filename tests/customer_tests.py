@@ -3,7 +3,7 @@ from unittest import TestCase, skip
 from abcbank.account import Account, CHECKING, SAVINGS
 from abcbank.customer import Customer
 
-class StatementTests(TestCase):
+class AccountTests(TestCase):
     
     def test_statement(self):
         checkingAccount = Account(CHECKING)
@@ -35,3 +35,30 @@ class StatementTests(TestCase):
         oscar = Customer("Oscar").openAccount(Account(SAVINGS))
         oscar.openAccount(Account(CHECKING))
         self.assertEquals(oscar.numAccs(), 3)
+
+    def test_ownsAccount_True(self):
+        oscar = Customer("Oscar").openAccount(Account(SAVINGS))
+        checkingAcct = Account(CHECKING)
+        oscar.openAccount(checkingAcct)
+        self.assertTrue(oscar.ownsAccount(checkingAcct))
+
+    def test_ownsAccount_False(self):
+        oscar = Customer("Oscar").openAccount(Account(SAVINGS))
+        oscar.openAccount(Account(CHECKING))
+        checkingAcct = Account(CHECKING)
+        self.assertFalse(oscar.ownsAccount(checkingAcct))
+
+    def test_transfer(self):
+        savingsAcct = Account(SAVINGS)
+        checkingAcct = Account(CHECKING)
+        oscar = Customer("Oscar").openAccount(savingsAcct)
+        oscar.openAccount(checkingAcct)
+        # Start with $500 in savings and $0 in checking.
+        savingsAcct.deposit(500.00)
+        self.assertTrue(oscar.ownsAccount(savingsAcct))
+        self.assertTrue(oscar.ownsAccount(checkingAcct))
+        # Transfer half of savings to checking to have $250 each.
+        oscar.transfer(savingsAcct, checkingAcct, 250.00)
+        self.assertEquals(savingsAcct.sumTransactions(), 250.0)
+        self.assertEquals(checkingAcct.sumTransactions(), 250.0)
+

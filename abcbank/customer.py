@@ -70,6 +70,30 @@ class Customer(object):
         totalSummary = "Total " + _toDollars(sum([t.amount for t in account.transactions]))
         return "\n\n{}\n".format(account.accountTypeText()) + transactionSummary + totalSummary
 
+    def ownsAccount(self, account):
+        '''Does this customer own the `account`?
+
+        :parameter Account account: the account to check
+        :returns:  True when this Customer owns the Account
+        '''
+        # Use the "is" operator to match the exact Account object.
+        # TODO: Replace this with a clear Account.id
+        return any([ account is v for v in self.accounts ])
+
+    def transfer(self, fromAccount, toAccount, amount):
+        ''' Transfer money from one account to another belonging to this customer.
+        The `amount` should be a postive value in USD.
+
+        :param fromAccount: transfer from this Account
+        :param toAccount: transfer to this Account
+        :param float amount: transfer this amount in USD
+        '''
+        if not (self.ownsAccount(fromAccount) and self.ownsAccount(toAccount)):
+            raise ValueError("Customer cannot transfer between those accounts")
+
+        fromAccount.withdraw(amount)
+        toAccount.deposit(amount)
+
 
 def _toDollars(number):
     ''' Format an amount in USD to a printed USD string, e.g. 12.01 to "$12.01".
