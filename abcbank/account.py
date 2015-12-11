@@ -4,6 +4,11 @@ CHECKING = 0
 SAVINGS = 1
 MAXI_SAVINGS = 2
 
+ACCT_TYPE_NAME = {
+    CHECKING: "Checking Account",
+    SAVINGS: "Savings Account",
+    MAXI_SAVINGS: "Maxi Savings Account",
+}
 
 class Account(object):
     ''' An Account belongs to a Customer.
@@ -76,13 +81,7 @@ class Account(object):
         :returns: a string for the account type name
         '''
         accountType = ""
-
-        if self.accountType == CHECKING:
-            accountType = "Checking Account"
-        if self.accountType == SAVINGS:
-            accountType = "Savings Account"
-        if self.accountType == MAXI_SAVINGS:
-            accountType = "Maxi Savings Account"
-
+        if self.accountType in ACCT_TYPE_NAME:
+            accountType = ACCT_TYPE_NAME[self.accountType]
         return accountType
 

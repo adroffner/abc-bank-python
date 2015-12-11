@@ -62,3 +62,15 @@ class AccountTests(TestCase):
         self.assertEquals(savingsAcct.sumTransactions(), 250.0)
         self.assertEquals(checkingAcct.sumTransactions(), 250.0)
 
+    def test_transfer_error(self):
+        savingsAcct = Account(SAVINGS)
+        checkingAcct = Account(CHECKING)
+        otherAcct = Account(CHECKING)
+        oscar = Customer("Oscar").openAccount(savingsAcct)
+        oscar.openAccount(checkingAcct)
+        # Start with $500 in savings and $0 in checking.
+        savingsAcct.deposit(500.00)
+        # Try to transfer half of savings to other person's account to have $250 each.
+        with self.assertRaisesRegexp(ValueError, r'Customer cannot transfer between those accounts'):
+            oscar.transfer(savingsAcct, otherAcct, 250.00)
+

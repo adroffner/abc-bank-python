@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from abcbank.transaction import Transaction
-from abcbank.account import Account, CHECKING, SAVINGS, MAXI_SAVINGS
+from abcbank.account import Account, CHECKING, SAVINGS, MAXI_SAVINGS, ACCT_TYPE_NAME
 
 
 class AccountTests(TestCase):
@@ -79,4 +79,9 @@ class AccountTests(TestCase):
         a.deposit(amount)
         iy = a.interestEarned()
         self.assertEqual(iy, interest)
+
+    def test_accountTypeText(self):
+        for k,v in ACCT_TYPE_NAME.items():
+            a = Account(k)
+            self.assertEquals(a.accountTypeText(), v)
 
