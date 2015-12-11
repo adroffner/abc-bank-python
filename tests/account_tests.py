@@ -57,27 +57,21 @@ class AccountTests(TestCase):
         iy = a.interestEarned()
         self.assertEqual(iy, interest)
 
-    def test_interest_maxi_savings_low(self):
+    def test_interest_maxi_savings_no_withdrawl(self):
         amount = 370.00
-        interest = amount * 0.02
+        interest = amount * 0.05
         a = Account(MAXI_SAVINGS)
         a.deposit(amount)
         iy = a.interestEarned()
         self.assertEqual(iy, interest)
 
-    def test_interest_maxi_savings_high(self):
-        amount = 1250.00
-        interest = (amount - 1000) * 0.05 + 20.0
+    def test_interest_maxi_savings_recent_withdrawl(self):
+        amount = 370.00
+        pocketMoney = 50.00
+        interest = (amount - pocketMoney) * 0.001
         a = Account(MAXI_SAVINGS)
         a.deposit(amount)
-        iy = a.interestEarned()
-        self.assertEqual(iy, interest)
-
-    def test_interest_maxi_savings_max(self):
-        amount = 2350.00
-        interest = (amount - 2000) * 0.1 + 70.0
-        a = Account(MAXI_SAVINGS)
-        a.deposit(amount)
+        a.withdraw(pocketMoney)
         iy = a.interestEarned()
         self.assertEqual(iy, interest)
 

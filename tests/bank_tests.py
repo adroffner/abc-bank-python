@@ -4,7 +4,7 @@ from abcbank.account import Account, CHECKING, MAXI_SAVINGS, SAVINGS
 from abcbank.bank import Bank
 from abcbank.customer import Customer
 
-class CustomerTests(TestCase):
+class BankTests(TestCase):
 
     def test_customer_summary(self):
         bank = Bank()
@@ -36,4 +36,4 @@ class CustomerTests(TestCase):
         checkingAccount = Account(MAXI_SAVINGS)
         bank.addCustomer(Customer("Bill").openAccount(checkingAccount))
         checkingAccount.deposit(3000.0)
-        self.assertEquals(bank.totalInterestPaid(), 170.0)
+        self.assertEquals(bank.totalInterestPaid(), 150.0)

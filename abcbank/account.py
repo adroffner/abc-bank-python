@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from abcbank.transaction import Transaction
+from abcbank.transaction import Transaction, DEPOSIT, WITHDRAWL
 
 CHECKING = 0
 SAVINGS = 1
@@ -58,12 +58,20 @@ class Account(object):
             else:
                 return 1 + (amount - 1000) * 0.002
         elif self.accountType == MAXI_SAVINGS:
+            # NOTE: This was the former maxi-savings plan
+            """
             if (amount <= 1000):
                 return amount * 0.02
             elif (amount <= 2000):
                 return 20 + (amount - 1000) * 0.05
             else:
                 return 70 + (amount - 2000) * 0.1
+            """
+            # Give a lower rate when withdrawls were made in the last 10 days.
+            if self.transactionHistory(10, transType=WITHDRAWL):
+                return amount * 0.001
+            else:
+                return amount * 0.05
         elif self.accountType == CHECKING:
             return amount * 0.001
         else:
